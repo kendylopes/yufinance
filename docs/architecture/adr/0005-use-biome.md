@@ -1,37 +1,28 @@
 ---
-title: Usar Biome para qualidade de código
+title: Usar Biome
 status: accepted
-date: 2026-07-14
+date: 2026-07-15
 ---
 
 # ADR-0005 — Usar Biome
 
 ## Contexto
 
-O YuFinance precisa de uma ferramenta única para:
-
-- lint;
-- formatação;
-- organização de imports;
-- correções automáticas;
-- integração com CI e editor.
+O projeto precisa de lint, formatação e organização de imports.
 
 ## Decisão
 
-Utilizar o Biome como ferramenta oficial de lint e formatação.
+Utilizar Biome como ferramenta oficial.
 
-Não utilizar ESLint ou Prettier no projeto inicial.
+Não utilizar ESLint ou Prettier inicialmente.
 
 ## Consequências positivas
 
-- configuração centralizada;
-- execução rápida;
-- menos dependências;
-- menos conflitos entre formatter e linter;
-- integração oficial com VS Code.
+- Configuração centralizada.
+- Execução rápida.
+- Menos dependências.
+- Integração com VS Code.
 
 ## Consequências negativas
 
-- algumas regras específicas do ecossistema ESLint podem não existir;
-- regras muito especializadas poderão exigir validações adicionais;
-- a equipe precisa utilizar a extensão oficial do Biome.
+- Algumas regras específicas do ecossistema ESLint podem não existir.
