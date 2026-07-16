@@ -49,3 +49,15 @@ Frontend         ░░░░░░░░░░   0%
 Testes           ░░░░░░░░░░   0%
 Deploy           ░░░░░░░░░░   0%
 ```
+## Sprint 2 — Fundação do banco
+
+- [x] Dependências do Drizzle validadas
+- [x] Variáveis de ambiente configuradas
+- [x] Conexão Neon configurada
+- [x] Script de verificação criado
+- [x] Conexão com PostgreSQL validada
+- [ ] Enums
+- [ ] Workspaces
+- [ ] Workspace Members
+- [ ] Workspace Settings
+- [ ] Migration inicial
