@@ -356,3 +356,24 @@ Uma tarefa está concluída quando:
 - imports internos entre módulos;
 - credenciais no Git;
 - código incompleto em produção.
+## Gestão de variáveis de ambiente
+
+### Arquivos
+
+.env.local
+→ Desenvolvimento local
+→ Nunca versionar
+
+.env.example
+→ Modelo para outros desenvolvedores
+→ Nunca conter valores reais
+
+### Regras
+
+- Nunca versionar segredos.
+- Nunca publicar DATABASE_URL real.
+- Nunca publicar chaves de API.
+- Rotacionar imediatamente qualquer credencial exposta.
+- Todo segredo deve existir apenas em:
+  - .env.local
+  - Variáveis do ambiente de produção (Vercel, CI/CD, etc.).
