@@ -52,11 +52,14 @@ Deploy           ░░░░░░░░░░   0%
 ## Sprint 2 — Fundação do banco
 
 - [x] Conexão Neon
-- [x] Enums
-- [x] Workspace
-- [x] Better Auth instalado
-- [x] Schema oficial de autenticação gerado
-- [x] Rota de autenticação criada
-- [ ] Workspace Members
-- [ ] Workspace Settings
-- [ ] Migration inicial
+- [x] Enums do núcleo
+- [x] Workspaces
+- [x] Better Auth
+- [x] Schema oficial de autenticação
+- [x] Rota de autenticação
+- [x] Workspace Members
+- [x] Workspace Settings
+- [x] Relações do núcleo
+- [ ] Revisão da migration inicial
+- [ ] Aplicação da migration inicial
+- [ ] Validação no Drizzle Studio

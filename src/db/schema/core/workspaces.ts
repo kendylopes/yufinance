@@ -38,6 +38,7 @@ export const workspaces = pgTable(
       mode: "date",
     })
       .defaultNow()
+      .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => [
