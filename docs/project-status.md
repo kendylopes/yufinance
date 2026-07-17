@@ -51,13 +51,12 @@ Deploy           ░░░░░░░░░░   0%
 ```
 ## Sprint 2 — Fundação do banco
 
-- [x] Dependências do Drizzle validadas
-- [x] Variáveis de ambiente configuradas
-- [x] Conexão Neon configurada
-- [x] Script de verificação criado
-- [x] Conexão com PostgreSQL validada
-- [ ] Enums
-- [ ] Workspaces
+- [x] Conexão Neon
+- [x] Enums
+- [x] Workspace
+- [x] Better Auth instalado
+- [x] Schema oficial de autenticação gerado
+- [x] Rota de autenticação criada
 - [ ] Workspace Members
 - [ ] Workspace Settings
 - [ ] Migration inicial
