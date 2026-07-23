@@ -51,15 +51,27 @@ Deploy           ░░░░░░░░░░   0%
 ```
 ## Sprint 2 — Fundação do banco
 
-- [x] Conexão Neon
-- [x] Enums do núcleo
-- [x] Workspaces
-- [x] Better Auth
-- [x] Schema oficial de autenticação
-- [x] Rota de autenticação
-- [x] Workspace Members
-- [x] Workspace Settings
-- [x] Relações do núcleo
-- [ ] Revisão da migration inicial
-- [ ] Aplicação da migration inicial
-- [ ] Validação no Drizzle Studio
+Status: Concluída ✅
+
+## Sprint 3 — Identity e Workspace
+
+### Identity
+
+- [x] Planejamento
+- [x] PRD
+- [x] Regras de negócio
+- [x] Modelo de domínio
+- [x] Casos de uso
+- [x] Arquitetura do módulo
+- [ ] Implementação
+- [ ] Testes
+- [ ] Revisão final
+
+### Workspace
+
+- [ ] PRD
+- [ ] Regras de negócio
+- [ ] Modelo de domínio
+- [ ] Casos de uso
+- [ ] Implementação
+- [ ] Testes
