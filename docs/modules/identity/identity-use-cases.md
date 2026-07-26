@@ -153,6 +153,53 @@ Uma nova identidade válida é criada.
 - falha do serviço de autenticação;
 - erro interno inesperado.
 
+## Comportamento atual após cadastro
+
+Na configuração atual do Better Auth, o cadastro por e-mail e senha
+cria automaticamente uma sessão autenticada.
+
+Fluxo observado:
+
+RegisterUser
+→ User criado
+→ Account criada
+→ Session criada
+→ usuário autenticado
+
+O e-mail permanece inicialmente com:
+
+`emailVerified = false`
+
+A verificação de e-mail será implementada em etapa posterior.
+
+## Estado da implementação
+
+Status: Concluído ✅
+
+Implementado com:
+
+- validação Zod;
+- React Hook Form;
+- Better Auth;
+- PostgreSQL / Neon;
+- tratamento de erros;
+- sessão automática após cadastro;
+- testes de schema;
+- testes da aplicação;
+- testes da interface.
+
+Comportamento validado:
+
+RegisterUser
+→ User criado
+→ Account criada
+→ Session criada
+→ usuário autenticado
+
+O e-mail permanece inicialmente com:
+
+`emailVerified = false`
+
 ## Regras relacionadas
 
 - ID-RN-001

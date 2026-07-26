@@ -75,3 +75,19 @@ Status: Concluída ✅
 - [ ] Casos de uso
 - [ ] Implementação
 - [ ] Testes
+
+### RegisterUser
+
+- [x] Schema de validação
+- [x] Better Auth Client
+- [x] Caso de uso
+- [x] SignUpForm
+- [x] Página /register
+- [x] Cadastro real validado
+- [x] User criado
+- [x] Account criada
+- [x] Session criada
+- [x] Testes de schema
+- [x] Testes da aplicação
+- [x] Testes da interface
+- [x] Vertical Slice concluído

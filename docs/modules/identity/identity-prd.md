@@ -327,3 +327,4 @@ Consideraremos a primeira versão do Identity concluída quando:
 - [ ] recuperação de senha estiver funcionando;
 - [ ] erros forem tratados adequadamente;
 - [ ] testes essenciais estiverem implementados.
+

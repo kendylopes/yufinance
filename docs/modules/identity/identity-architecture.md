@@ -623,3 +623,21 @@ clareza
 → testabilidade
 → manutenção
 → evolução
+
+## Implementação atual do Better Auth
+
+A configuração do Better Auth está localizada em:
+
+`src/modules/identity/infrastructure/better-auth.ts`
+
+Esse arquivo pertence à camada Infrastructure porque depende diretamente
+de uma tecnologia externa.
+
+A rota:
+
+`src/app/api/auth/[...all]/route.ts`
+
+não contém regras de autenticação.
+
+Ela apenas conecta as requisições HTTP do Next.js ao handler fornecido
+pelo Better Auth.

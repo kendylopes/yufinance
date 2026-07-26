@@ -140,20 +140,20 @@ A restrição deverá existir tanto na aplicação quanto no banco de dados.
 
 Todo usuário deverá possuir um nome.
 
-A interface poderá posteriormente definir regras adicionais de tamanho
-e apresentação.
+O nome deverá possuir entre 2 e 100 caracteres após a remoção
+de espaços desnecessários no início e no final.
 
 ---
 
 ## ID-RN-004 — Senha obrigatória no cadastro tradicional
 
-Quando o cadastro utilizar autenticação por e-mail e senha, uma senha
-válida será obrigatória.
+Quando o cadastro utilizar autenticação por e-mail e senha,
+uma senha válida será obrigatória.
 
-A senha nunca deverá ser armazenada em texto puro.
+No MVP, a senha deverá possuir entre 8 e 128 caracteres.
 
-O tratamento criptográfico da credencial será responsabilidade do
-Better Auth.
+Esses limites deverão permanecer sincronizados com a configuração
+do Better Auth.
 
 ---
 
