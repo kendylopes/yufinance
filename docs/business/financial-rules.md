@@ -2,10 +2,15 @@
 title: Regras Financeiras YuFinance
 version: 1.0
 status: approved
-updated_at: 2026-07-15
+updated_at: 2026-07-27
 ---
 
 # Regras Financeiras
+
+## Como usar este documento
+
+Este documento explica uma parte específica do YuFinance em linguagem direta. Use-o para entender **o que foi decidido**, **por que essa decisão existe** e **qual é o estado atual** antes de alterar código relacionado. Quando houver diferença entre uma ideia planejada e o sistema já implementado, o texto deve marcar explicitamente **PLANEJADO**, **IMPLEMENTADO** ou **VALIDADO**.
+
 
 ## FR-001 — Precisão monetária
 

@@ -657,3 +657,16 @@ A interface chama os casos de uso.
 Os casos de uso não devem depender da existência de uma tela específica.
 
 Esse princípio permite reutilizar a lógica em diferentes interfaces.
+## Checkpoint de implementação — 2026-07-27
+
+**Status: IMPLEMENTADO E VALIDADO no escopo atual.**
+
+- cadastro com e-mail e senha via Better Auth;
+- senha validada entre 8 e 128 caracteres;
+- criação real de `user`, `account` e `session`;
+- `RegisterUser` com schema Zod, caso de uso e `SignUpForm`;
+- acessibilidade com `useId()` e elementos semânticos;
+- `getCurrentUser()` server-side usando Better Auth e `next/headers`;
+- testes de schema, aplicação e apresentação aprovados.
+
+Recuperação de senha, verificação de e-mail e demais extensões de identidade continuam planejadas quando não estiverem explicitamente marcadas como implementadas neste documento.

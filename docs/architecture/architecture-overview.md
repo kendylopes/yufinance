@@ -1,11 +1,16 @@
 ---
 title: Visão Geral da Arquitetura
-version: 1.1
+version: 1.2
 status: approved
-updated_at: 2026-07-16
+updated_at: 2026-07-27
 ---
 
 # Arquitetura do YuFinance
+
+## Como usar este documento
+
+Este documento explica uma parte específica do YuFinance em linguagem direta. Use-o para entender **o que foi decidido**, **por que essa decisão existe** e **qual é o estado atual** antes de alterar código relacionado. Quando houver diferença entre uma ideia planejada e o sistema já implementado, o texto deve marcar explicitamente **PLANEJADO**, **IMPLEMENTADO** ou **VALIDADO**.
+
 
 ## 1. Objetivo
 
@@ -138,7 +143,7 @@ Responsável por:
 ```text
 src/modules/
 ├── identity/
-├── workspaces/
+├── workspace/
 ├── accounts/
 ├── categories/
 ├── transactions/
@@ -170,7 +175,7 @@ src/
 │
 ├── modules/
 │   ├── identity/
-│   ├── workspaces/
+│   ├── workspace/
 │   ├── accounts/
 │   ├── categories/
 │   ├── transactions/
@@ -412,3 +417,74 @@ Um módulo só deverá ser extraído para serviço independente quando existir n
 - integração externa;
 - equipe separada;
 - ciclo de deploy independente.
+
+## 23. Arquitetura validada de Identity e Workspace
+
+**Status: IMPLEMENTADO E VALIDADO.**
+
+O fluxo real já implementado é:
+
+```text
+Browser
+  ↓
+Client Component
+  ↓
+Server Action
+  ↓
+Application / caso de uso
+  ↓
+Infrastructure / Repository
+  ↓
+Drizzle ORM
+  ↓
+Neon PostgreSQL
+```
+
+### Fronteira Client/Server
+
+Componentes com `"use client"` não importam casos de uso que dependem de `server-only`, `next/headers`, Better Auth server-side ou acesso ao banco. Quando uma interface cliente precisa executar uma mutação, ela chama uma **Server Action** dedicada.
+
+No onboarding, `OnboardingForm` chama `createInitialWorkspaceAction()`, que então chama `createInitialWorkspace()`. Isso evita que `getCurrentUser()` e `next/headers` entrem no bundle do navegador.
+
+### Estado de entrada
+
+`getWorkspaceEntryState()` centraliza a decisão inicial:
+
+- `UNAUTHENTICATED` → `/login`;
+- `ONBOARDING_REQUIRED` → `/onboarding`;
+- `READY` → `/dashboard`.
+
+`READY.workspaceId` indica que existe um Membership válido para permitir a entrada. Ele **não deve ser tratado como mecanismo definitivo de seleção do Workspace atual** quando múltiplos Workspaces forem suportados.
+
+### Persistência do onboarding
+
+`persistInitialWorkspace()` coordena a persistência e `workspace-repository.ts` conhece Drizzle. A criação inicial grava em conjunto:
+
+1. `workspaces`;
+2. `workspace_members` com `OWNER`;
+3. `workspace_settings`.
+
+A operação foi validada manualmente contra o Neon.
+
+
+## Financial Accounts — arquitetura validada
+
+**Status: IMPLEMENTADO E VALIDADO.**
+
+Mutações seguem:
+
+```text
+Client Component
+→ Server Action
+→ Application
+→ Domain Policy
+→ Repository
+→ Drizzle
+→ Neon PostgreSQL
+```
+
+A página `/dashboard/accounts` é composta server-side e consulta contas ativas e arquivadas em paralelo.
+
+Financial Accounts nunca são autorizadas apenas pelo ID do recurso; `workspaceId`, Membership e Role fazem parte da fronteira de segurança.
+
+Archive e Restore usam `archivedAt` e preservam o registro.

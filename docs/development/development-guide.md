@@ -1,11 +1,16 @@
 ---
 title: Guia de Desenvolvimento
-version: 1.0
+version: 1.2
 status: approved
-updated_at: 2026-07-16
+updated_at: 2026-07-27
 ---
 
 # Guia de Desenvolvimento do YuFinance
+
+## Como usar este documento
+
+Este documento explica uma parte específica do YuFinance em linguagem direta. Use-o para entender **o que foi decidido**, **por que essa decisão existe** e **qual é o estado atual** antes de alterar código relacionado. Quando houver diferença entre uma ideia planejada e o sistema já implementado, o texto deve marcar explicitamente **PLANEJADO**, **IMPLEMENTADO** ou **VALIDADO**.
+
 
 ## 1. Objetivo
 
@@ -66,6 +71,7 @@ Comandos:
 npm run check
 npm run check:fix
 npm run typecheck
+npm run test
 npm run build
 ```
 
@@ -377,3 +383,41 @@ Uma tarefa está concluída quando:
 - Todo segredo deve existir apenas em:
   - .env.local
   - Variáveis do ambiente de produção (Vercel, CI/CD, etc.).
+
+## 30. Convenções validadas na Sprint 3
+
+### Módulos
+
+O nome oficial é `src/modules/workspace/` no singular. Não usar `src/modules/workspaces/`.
+
+### Código e documentação
+
+Identificadores de código permanecem em inglês por interoperabilidade e convenção do ecossistema. A documentação explica a tradução e o motivo dos nomes em português simples.
+
+### `server-only`
+
+Código que depende de `next/headers`, sessão server-side, banco ou segredos deve permanecer protegido por `import "server-only"` quando aplicável. Não remover essa proteção para fazer testes passarem.
+
+### Server Actions
+
+Client Components não importam diretamente casos de uso server-only. A interface chama um arquivo com `"use server"`, como `onboarding.actions.ts`.
+
+### Testes de Client Components
+
+Ao testar uma interface que usa Server Action, mockar a fronteira da action. Para evitar que o Vitest transforme a implementação server-side real, usar mocks hoisted quando necessário (`vi.hoisted`).
+
+### Repository
+
+O Repository conhece Drizzle; o caso de uso não deve conhecer detalhes de `select`, `insert` ou `batch`. No Workspace atual, a consulta de Membership e a criação dos registros iniciais ficam em `workspace-repository.ts`.
+
+### Comandos de banco atuais
+
+```bash
+npm run db:generate
+npm run db:migrate
+npm run db:studio
+npm run db:check
+npm run db:ping
+```
+
+`npm run db:ping` já foi validado contra o Neon.

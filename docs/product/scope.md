@@ -1,11 +1,16 @@
 ---
 title: Escopo YuFinance
-version: 1.0
+version: 1.1
 status: approved
-updated_at: 2026-07-15
+updated_at: 2026-07-27
 ---
 
 # Escopo do YuFinance v1.0
+
+## Como usar este documento
+
+Este documento explica uma parte específica do YuFinance em linguagem direta. Use-o para entender **o que foi decidido**, **por que essa decisão existe** e **qual é o estado atual** antes de alterar código relacionado. Quando houver diferença entre uma ideia planejada e o sistema já implementado, o texto deve marcar explicitamente **PLANEJADO**, **IMPLEMENTADO** ou **VALIDADO**.
+
 
 ## Dentro do MVP
 
@@ -17,7 +22,8 @@ updated_at: 2026-07-15
 - Sessão autenticada
 
 ### Workspace
-- Workspace pessoal automático
+- Workspace inicial criado durante o onboarding
+- Tipos PERSONAL, COUPLE e FAMILY disponíveis na criação
 - Usuário inicial como OWNER
 - Moeda BRL
 - Timezone America/Sao_Paulo

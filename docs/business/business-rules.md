@@ -1,140 +1,141 @@
 ---
 title: Regras de Negócio YuFinance
-version: 1.0
+version: 1.2
 status: approved
-updated_at: 2026-07-15
+updated_at: 2026-07-29
 ---
 
 # Regras de Negócio
 
-## BR-001 — Isolamento por workspace
+## Como usar este documento
 
-Todo dado financeiro deve pertencer a um workspace.
+Regras transversais do YuFinance. Regras específicas de um módulo permanecem nos documentos do próprio módulo.
 
-Nenhuma operação poderá confiar somente no ID do recurso. A autorização deverá validar o workspace do usuário autenticado.
+## BR-001 — Isolamento por Workspace
 
-## BR-002 — Workspace pessoal
+Todo dado financeiro pertence a um Workspace.
 
-Ao cadastrar um usuário, o sistema deve criar:
+Nenhuma operação confia somente no ID do recurso.
 
-1. usuário;
-2. workspace pessoal;
-3. membership com papel OWNER;
-4. configurações padrão;
-5. categorias padrão.
+## BR-002 — Workspace inicial
 
-## BR-003 — Contas financeiras
+Cadastro cria identidade/sessão. O Workspace inicial é criado no onboarding.
 
-Uma conta representa onde o dinheiro está armazenado.
+Fluxo validado:
 
-Tipos:
+```text
+User
+→ Session
+→ ONBOARDING_REQUIRED
+→ CreateInitialWorkspace
+→ Membership OWNER
+→ WorkspaceSettings
+→ READY
+```
 
-- CHECKING
-- SAVINGS
-- CASH
-- DIGITAL_WALLET
-- INVESTMENT
-- OTHER
+## BR-003 — Financial Accounts
+
+**IMPLEMENTADO.**
+
+Tipos oficiais:
+
+- CHECKING;
+- SAVINGS;
+- DIGITAL;
+- WALLET;
+- CASH.
+
+Financial Accounts pertencem a um Workspace e usam `NUMERIC(19,4)` para saldo inicial.
 
 ## BR-004 — Arquivamento de contas
 
-Contas com histórico não devem ser excluídas fisicamente. Devem ser arquivadas.
+**IMPLEMENTADO.**
 
-Contas arquivadas:
+Contas usam `archivedAt`, não exclusão física comum.
 
-- permanecem no histórico;
-- permanecem em relatórios;
-- não recebem novas transações.
+```text
+ativa      → archivedAt = NULL
+arquivada  → archivedAt = timestamp
+```
 
-## BR-005 — Categorias
+Contas arquivadas podem ser restauradas.
 
-Categorias são classificadas como:
+## BR-005 — Permissões de contas
 
-- INCOME
-- EXPENSE
+Leitura:
 
-Uma categoria de receita não pode ser usada em despesa, e vice-versa.
+- OWNER;
+- ADMIN;
+- MEMBER;
+- VIEWER.
 
-## BR-006 — Arquivamento de categorias
+Gerenciamento:
 
-Categorias utilizadas devem ser arquivadas, não excluídas.
+- OWNER;
+- ADMIN.
 
-## BR-007 — Transações
+## BR-006 — Categorias
 
-Tipos permitidos:
+**PLANEJADO — próximo domínio.**
 
-- INCOME
-- EXPENSE
+Categorias serão classificadas como:
 
-Status persistidos:
+- INCOME;
+- EXPENSE.
 
-- PENDING
-- PAID
-- CANCELED
+## BR-007 — Arquivamento de categorias
+
+**PLANEJADO.**
+
+Categorias utilizadas deverão preferir arquivamento a exclusão destrutiva.
+
+## BR-008 — Transactions
+
+**PLANEJADO.**
+
+Tipos:
+
+- INCOME;
+- EXPENSE.
+
+Status previstos:
+
+- PENDING;
+- PAID;
+- CANCELED.
 
 OVERDUE será derivado.
 
-## BR-008 — Status atrasado
-
-Uma transação será exibida como atrasada quando:
-
-- status persistido for PENDING;
-- dueDate for anterior à data local do workspace.
-
 ## BR-009 — Pagamento
 
-Ao marcar uma transação como paga:
+**PLANEJADO.**
 
-- status passa para PAID;
-- paidAt deve ser preenchido;
-- a transação passa a afetar o saldo atual.
+Transação paga deverá preencher `paidAt` e passar a afetar saldo atual.
 
-## BR-010 — Reversão
+## BR-010 — Cancelamento
 
-Ao reverter um pagamento:
+**PLANEJADO.**
 
-- status volta para PENDING;
-- paidAt é removido;
-- o efeito no saldo atual deixa de existir.
+Transação cancelada permanece no histórico e não afeta saldos.
 
-## BR-011 — Cancelamento
+## BR-011 — Transferência
 
-Uma transação cancelada:
+**PLANEJADO.**
 
-- permanece no histórico;
-- não afeta saldo atual;
-- não afeta saldo previsto;
-- não entra nos indicadores principais.
-
-## BR-012 — Transferência
-
-Transferência é uma entidade independente.
-
-Ela:
+Transferência:
 
 - move valor entre contas;
 - não é receita;
 - não é despesa;
 - não usa categoria;
-- não afeta relatórios de receitas e despesas.
+- exige contas distintas do mesmo Workspace.
 
-## BR-013 — Transferência entre contas
+## BR-012 — Saldo negativo
 
-As contas de origem e destino:
+A regra global permanece prevista como permitida para saldo derivado futuro. O `initialBalance` do fluxo atual de criação é validado como maior ou igual a zero.
 
-- devem ser diferentes;
-- devem pertencer ao mesmo workspace;
-- devem estar ativas ao criar a transferência.
+## BR-013 — Categoria obrigatória
 
-## BR-014 — Saldo negativo
+**PLANEJADO.**
 
-Saldo negativo será permitido.
-
-## BR-015 — Categoria obrigatória
-
-Toda receita ou despesa deverá possuir categoria.
-
-Cada workspace terá as categorias padrão:
-
-- Outros — Receita
-- Outros — Despesa
+Receitas e despesas deverão possuir categoria.

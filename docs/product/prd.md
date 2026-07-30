@@ -1,11 +1,16 @@
 ---
 title: PRD YuFinance
-version: 1.0
+version: 1.1
 status: approved
-updated_at: 2026-07-15
+updated_at: 2026-07-27
 ---
 
 # PRD — YuFinance v1.0
+
+## Como usar este documento
+
+Este documento explica uma parte específica do YuFinance em linguagem direta. Use-o para entender **o que foi decidido**, **por que essa decisão existe** e **qual é o estado atual** antes de alterar código relacionado. Quando houver diferença entre uma ideia planejada e o sistema já implementado, o texto deve marcar explicitamente **PLANEJADO**, **IMPLEMENTADO** ou **VALIDADO**.
+
 
 ## 1. Visão do produto
 
@@ -36,7 +41,7 @@ Pessoas físicas que desejam organizar suas finanças pessoais, incluindo:
 
 O YuFinance será um SaaS.
 
-Cada usuário terá inicialmente um workspace pessoal. A arquitetura deverá permitir, futuramente, workspaces compartilhados para casais e famílias.
+Cada usuário configura seu primeiro Workspace no onboarding. O modelo já aceita tipos `PERSONAL`, `COUPLE` e `FAMILY`; colaboração completa e seleção entre múltiplos Workspaces serão evoluções posteriores.
 
 ## 6. Princípios do produto
 
@@ -82,8 +87,8 @@ Cada usuário terá inicialmente um workspace pessoal. A arquitetura deverá per
 ## 9. Jornada principal do MVP
 
 1. Criar conta
-2. Criar workspace pessoal automaticamente
-3. Concluir onboarding
+2. Iniciar onboarding autenticado
+3. Criar o Workspace inicial e tornar o usuário OWNER
 4. Criar primeira conta financeira
 5. Registrar receita
 6. Registrar despesa

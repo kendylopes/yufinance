@@ -1,82 +1,124 @@
 ---
 title: Modelo de Banco de Dados YuFinance
-version: 1.0
+version: 1.2
 status: approved
-updated_at: 2026-07-15
+updated_at: 2026-07-27
 ---
 
 # Modelo de Banco de Dados
 
-## Banco
+## Como usar este documento
 
-PostgreSQL gerenciado pelo Neon.
+Este documento mostra **o que existe hoje no PostgreSQL** e separa isso do que ainda será criado. Consulte-o antes de alterar schemas Drizzle, gerar migrations ou implementar um novo domínio.
 
-## ORM
+## Stack
 
-Drizzle ORM.
+- PostgreSQL gerenciado pelo Neon;
+- Drizzle ORM + Drizzle Kit;
+- migrations versionadas;
+- `DATABASE_URL` real somente em ambiente local/produção, nunca no Git.
 
 ## Convenções
 
-- SQL em snake_case
-- TypeScript em camelCase
-- IDs em UUID
-- dinheiro em NUMERIC(19,4)
-- datas financeiras em DATE
-- eventos temporais em TIMESTAMPTZ
+- SQL: `snake_case`;
+- TypeScript: `camelCase`;
+- Workspace: UUID;
+- Identity/Better Auth: IDs `text`;
+- eventos temporais do Workspace: `TIMESTAMPTZ`;
+- valores financeiros planejados: `NUMERIC(19,4)`.
 
-## Tabelas principais
+## IMPLEMENTADO E VALIDADO
 
-- users
-- sessions
-- accounts_auth
-- verifications
-- workspaces
-- workspace_members
-- workspace_settings
-- financial_accounts
-- categories
-- transactions
-- transfers
+### Better Auth
 
-## Enums
+- `user`;
+- `session`;
+- `account`;
+- `verification`.
 
-- workspace_type
-- workspace_role
-- account_type
-- category_type
-- transaction_type
-- transaction_status
-- theme_preference
-- week_start
+As tabelas são mantidas com os nomes exigidos pela integração atual do Better Auth. Cadastro real já confirmou criação de `user`, `account` e `session`.
 
-## Integridade
+### Workspace
 
-O banco deverá garantir:
+- `workspaces`;
+- `workspace_members`;
+- `workspace_settings`.
 
-- amount > 0;
-- contas diferentes em transferências;
-- membership único;
-- settings únicas por workspace;
-- consistência entre status e paid_at;
-- integridade de workspace por foreign keys compostas;
-- contas e categorias históricas preservadas.
+Enums implementados:
 
-## Exclusão
+- `workspace_type`: `PERSONAL`, `COUPLE`, `FAMILY`;
+- `workspace_role`: `OWNER`, `ADMIN`, `MEMBER`, `VIEWER`;
+- `theme_preference`: `LIGHT`, `DARK`, `SYSTEM`;
+- `week_start`: `SUNDAY`, `MONDAY`.
 
-- Workspace: CASCADE em exclusão definitiva controlada.
-- Account: RESTRICT nas relações e arquivamento na aplicação.
-- Category: RESTRICT nas relações e arquivamento na aplicação.
-- Transaction: cancelamento preferencial.
-- Transfer: exclusão controlada no MVP.
+Defaults validados:
 
-## Índices principais
+- moeda: `BRL`;
+- timezone: `America/Sao_Paulo`;
+- locale: `pt-BR`;
+- tema: `SYSTEM`;
+- início da semana: `MONDAY`;
+- exibir centavos: `true`;
+- primeiro Membership: `OWNER`.
 
-- workspace_members(user_id)
-- workspace_members(workspace_id, role)
-- financial_accounts(workspace_id, is_archived)
-- categories(workspace_id, type, is_archived)
-- transactions(workspace_id, transaction_date)
-- transactions(workspace_id, status)
-- transactions(workspace_id, type, paid_at)
-- transactions(workspace_id, due_date)
-- transfers(workspace_id, transfer_date)
+Integridade já implementada inclui PK composta de Membership, FK com cascade, índices por usuário e Workspace/papel, unicidade de settings por Workspace e checks de nome/moeda/locale.
+
+## PLANEJADO — domínios financeiros
+
+Ainda não considerar como schema implementado:
+
+- `financial_accounts`;
+- `categories`;
+- `transactions`;
+- `transfers`;
+- enums financeiros correspondentes.
+
+Essas estruturas serão detalhadas e migradas nas próximas etapas. As regras de precisão monetária e saldo derivado continuam decisões aprovadas, mas ainda não representam tabelas existentes.
+
+## Fluxo de alteração
+
+```text
+Regra/documentação
+→ schema Drizzle
+→ db:generate
+→ revisar SQL
+→ db:migrate
+→ db:check / db:ping
+→ testes
+→ documentação atualizada
+```
+
+`db:push` não é o fluxo oficial para produção.
+
+
+## Financial Accounts — IMPLEMENTADO
+
+Tabela real:
+
+```text
+financial_accounts
+```
+
+Campos:
+
+- `id UUID` PK;
+- `workspace_id UUID NOT NULL` FK → `workspaces.id` ON DELETE CASCADE;
+- `name VARCHAR(80) NOT NULL`;
+- `type financial_account_type NOT NULL`;
+- `initial_balance NUMERIC(19,4) NOT NULL DEFAULT 0`;
+- `currency CHAR(3) NOT NULL DEFAULT BRL`;
+- `archived_at TIMESTAMPTZ NULL`;
+- `created_at TIMESTAMPTZ NOT NULL DEFAULT now()`;
+- `updated_at TIMESTAMPTZ NOT NULL DEFAULT now()`.
+
+Enum:
+
+```text
+CHECKING
+SAVINGS
+DIGITAL
+WALLET
+CASH
+```
+
+Soft archive é representado por `archived_at`, sem coluna booleana redundante.
