@@ -88,13 +88,16 @@ Mudanças relevantes de domínio, arquitetura, banco ou fluxo devem terminar com
 Documentação antiga não deve permanecer descrevendo como “planejado” algo já implementado.
 
 ## Estado em 2026-07-30
+## Roadmap
 
-- Fundação técnica: **concluída**;
-- Identity: **concluída no escopo atual**;
-- Workspace/Onboarding: **concluído**;
-- Financial Accounts: **concluído no escopo atual do MVP**;
-- Categories (backend): **concluído**;
-- Categories (Server Actions): **concluído**;
-- Categories (UI): **em desenvolvimento**;
-- suíte automatizada: **todos os testes verdes**;
-- próximo marco: **interface de Categories**.
+✅ Foundation
+
+✅ Identity
+
+✅ Workspace
+
+✅ Financial Accounts
+
+✅ Categories
+
+🚧 Transactions
