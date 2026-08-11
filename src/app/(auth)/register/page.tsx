@@ -1,4 +1,4 @@
-import { SignUpForm } from "@/modules/identity/presentation/sign-up-form";
+import { LoginForm } from "@/modules/identity/presentation/login-form";
 
 export default function RegisterPage() {
   return (
@@ -10,7 +10,7 @@ export default function RegisterPage() {
           <p className="text-sm">Comece a organizar sua vida financeira com o YuFinance.</p>
         </header>
 
-        <SignUpForm />
+        <LoginForm />
       </section>
     </main>
   );

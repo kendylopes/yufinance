@@ -1,0 +1,2 @@
+DROP INDEX "budgets_workspace_category_year_month_unique_idx";--> statement-breakpoint
+CREATE UNIQUE INDEX "budgets_workspace_category_year_month_active_unique_idx" ON "budgets" USING btree ("workspace_id","category_id","year","month") WHERE "budgets"."archived_at" is null;

@@ -22,6 +22,27 @@
       "when": 1785366580743,
       "tag": "0002_cuddly_salo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1785633366066,
+      "tag": "0003_abandoned_harpoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786093028995,
+      "tag": "0004_friendly_doctor_octopus",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786093962404,
+      "tag": "0005_glamorous_punisher",
+      "breakpoints": true
     }
   ]
 }

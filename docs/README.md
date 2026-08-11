@@ -1,103 +1,45 @@
 # YuFinance — Documentação Oficial
 
-Esta pasta é a fonte documental do YuFinance. Antes de alterar um domínio, consulte o PRD, regras de negócio, arquitetura, casos de uso e status correspondentes.
+Esta pasta é a fonte documental do YuFinance. O ponto de entrada obrigatório é o [PROJECT_MASTER.md](PROJECT_MASTER.md), que consolida visão, estado atual, arquitetura, módulos, processo e roadmap.
 
-## Estado em 2026-07-29
+## Ordem recomendada de leitura
 
-- Fundação técnica: **concluída**;
-- Identity: **concluída no escopo atual**;
-- Workspace/Onboarding: **concluído**;
-- Financial Accounts: **concluído no escopo atual do MVP**;
-- Create/List/Get/Update/Archive/Restore: **implementados e validados**;
-- soft archive e restauração: **validados no Neon**;
-- suíte automatizada: **141 testes aprovados**;
-- próximo domínio oficial: **Categorias**.
+1. [PROJECT_MASTER.md](PROJECT_MASTER.md) — visão consolidada e fonte de verdade.
+2. [product/prd.md](product/prd.md) — produto, problema e público.
+3. [architecture/architecture-overview.md](architecture/architecture-overview.md) — arquitetura oficial.
+4. [standards/DEVELOPMENT_WORKFLOW.md](standards/DEVELOPMENT_WORKFLOW.md) — processo de entrega.
+5. [standards/QUALITY_GATES.md](standards/QUALITY_GATES.md) — critérios obrigatórios de qualidade.
+6. [modules/README.md](modules/README.md) — índice dos módulos.
+7. [ROADMAP.md](ROADMAP.md) — sequência oficial de evolução.
+8. [CHANGELOG.md](CHANGELOG.md) — histórico consolidado.
 
-## Índice
-
-### Produto
-
-- [PRD](product/prd.md)
-- [Escopo](product/scope.md)
-- [Roadmap](product/roadmap.md)
-
-### Negócio
-
-- [Regras de Negócio](business/business-rules.md)
-- [Regras Financeiras](business/financial-rules.md)
-
-### Arquitetura
-
-- [Visão Geral](architecture/architecture-overview.md)
-- [Modelo de Domínio](architecture/domain-model.md)
-- [Modelo de Banco](architecture/database-model.md)
-- [ADRs](architecture/adr/)
-
-### Módulos
-
-- [Identity](modules/identity/)
-- [Workspace](modules/workspace/)
-- [Financial Accounts](modules/financial-accounts/)
-
-### Desenvolvimento
-
-- [Guia de Desenvolvimento](development/development-guide.md)
-- [Guia de Documentação](development/documentation-guide.md)
-- [Estratégia de Testes](development/testing-strategy.md)
-
-### UX
-
-- [Design System](ux/design-system.md)
-- [User Flows](ux/user-flows.md)
-- [Wireframes](ux/wireframes.md)
-
-### Controle do projeto
-
-- [Status do Projeto](project-status.md)
-- [Changelog](changelog.md)
-- [Glossário](glossary.md)
-- [Atualização documental — 2026-07-27](DOCUMENTATION-UPDATE-2026-07-27.md)
-- [Atualização documental — 2026-07-29](DOCUMENTATION-UPDATE-2026-07-29.md)
-
-## Baseline atual
+## Estrutura
 
 ```text
-User
-↓
-Workspace
-↓
-FinancialAccount
-↓
-Categories (próximo domínio)
-↓
-Transactions
-↓
-Transfers / Dashboard
+docs/
+├── README.md
+├── PROJECT_MASTER.md
+├── ROADMAP.md
+├── CHANGELOG.md
+├── project-status.md
+├── glossary.md
+├── architecture/
+├── business/
+├── development/
+├── modules/
+├── product/
+├── standards/
+├── templates/
+├── ux/
+├── reviews/
+└── archive/
 ```
 
 ## Regra de manutenção
 
-Mudanças relevantes de domínio, arquitetura, banco ou fluxo devem terminar com:
-
-1. implementação;
-2. testes;
-3. validação;
-4. atualização documental;
-5. atualização do status/changelog.
-
-Documentação antiga não deve permanecer descrevendo como “planejado” algo já implementado.
-
-## Estado em 2026-07-30
-## Roadmap
-
-✅ Foundation
-
-✅ Identity
-
-✅ Workspace
-
-✅ Financial Accounts
-
-✅ Categories
-
-🚧 Transactions
+- O `PROJECT_MASTER.md` representa o estado vigente.
+- Documentos de módulo detalham regras específicas.
+- ADRs registram decisões arquiteturais estáveis.
+- O `CHANGELOG.md` registra mudanças concluídas.
+- Registros temporários e snapshots devem ir para `archive/`.
+- Nenhuma sprint é encerrada sem atualizar documentação e Quality Gates.

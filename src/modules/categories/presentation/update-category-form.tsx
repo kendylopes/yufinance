@@ -2,9 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useId } from "react";
 import { useForm } from "react-hook-form";
 
+import { FormError } from "../../../components/forms/form-feedback";
+import { FormSection } from "../../../components/forms/form-section";
+import { SubmitButton } from "../../../components/forms/submit-button";
+import { TextField } from "../../../components/forms/text-field";
 import {
   type UpdateCategoryInput,
   updateCategorySchema,
@@ -22,7 +25,6 @@ export function UpdateCategoryForm({
   categoryId,
   defaultValues,
 }: UpdateCategoryFormProps) {
-  const nameId = useId();
   const router = useRouter();
 
   const {
@@ -36,10 +38,17 @@ export function UpdateCategoryForm({
   });
 
   async function onSubmit(data: UpdateCategoryInput) {
-    const result = await updateCategoryAction({ workspaceId, categoryId, data });
+    const result = await updateCategoryAction({
+      workspaceId,
+      categoryId,
+      data,
+    });
 
     if (!result.success) {
-      setError("root", { message: result.message });
+      setError("root", {
+        message: result.message,
+      });
+
       return;
     }
 
@@ -48,39 +57,23 @@ export function UpdateCategoryForm({
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={nameId}>
-          Nome da categoria
-        </label>
-        <input
-          id={nameId}
-          type="text"
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <FormSection title="Dados da categoria" description="Atualize as informações da categoria.">
+        <TextField
+          label="Nome da categoria"
           autoComplete="off"
-          aria-invalid={Boolean(errors.name)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
+          error={errors.name?.message}
           {...register("name")}
         />
-        {errors.name?.message && (
-          <p className="text-sm" role="alert">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
+      </FormSection>
 
-      {errors.root?.message && (
-        <p className="text-sm" role="alert">
-          {errors.root.message}
-        </p>
-      )}
+      <FormError message={errors.root?.message} />
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg border px-4 py-2 font-medium transition disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isSubmitting ? "Salvando..." : "Salvar alterações"}
-      </button>
+      <SubmitButton
+        isSubmitting={isSubmitting}
+        idleLabel="Salvar alterações"
+        submittingLabel="Salvando..."
+      />
     </form>
   );
 }

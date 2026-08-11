@@ -2,9 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useId } from "react";
 import { useForm } from "react-hook-form";
 
+import { FormError } from "../../../components/forms/form-feedback";
+import { FormSection } from "../../../components/forms/form-section";
+import { SelectField } from "../../../components/forms/select-field";
+import { SubmitButton } from "../../../components/forms/submit-button";
+import { TextField } from "../../../components/forms/text-field";
 import {
   type UpdateFinancialAccountInput,
   updateFinancialAccountSchema,
@@ -18,11 +22,26 @@ type UpdateFinancialAccountFormProps = {
 };
 
 const financialAccountTypes = [
-  { value: "CHECKING", label: "Conta corrente" },
-  { value: "SAVINGS", label: "Poupança" },
-  { value: "DIGITAL", label: "Conta digital" },
-  { value: "WALLET", label: "Carteira" },
-  { value: "CASH", label: "Dinheiro em espécie" },
+  {
+    value: "CHECKING",
+    label: "Conta corrente",
+  },
+  {
+    value: "SAVINGS",
+    label: "Poupança",
+  },
+  {
+    value: "DIGITAL",
+    label: "Conta digital",
+  },
+  {
+    value: "WALLET",
+    label: "Carteira",
+  },
+  {
+    value: "CASH",
+    label: "Dinheiro em espécie",
+  },
 ] as const;
 
 export function UpdateFinancialAccountForm({
@@ -30,8 +49,6 @@ export function UpdateFinancialAccountForm({
   financialAccountId,
   defaultValues,
 }: UpdateFinancialAccountFormProps) {
-  const nameId = useId();
-  const typeId = useId();
   const router = useRouter();
 
   const {
@@ -64,66 +81,34 @@ export function UpdateFinancialAccountForm({
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={nameId}>
-          Nome da conta
-        </label>
-
-        <input
-          id={nameId}
-          type="text"
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <FormSection
+        title="Dados da conta"
+        description="Atualize o nome e o tipo da conta financeira."
+      >
+        <TextField
+          label="Nome da conta"
           autoComplete="off"
-          aria-invalid={Boolean(errors.name)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
+          error={errors.name?.message}
           {...register("name")}
         />
 
-        {errors.name?.message && (
-          <p className="text-sm" role="alert">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={typeId}>
-          Tipo
-        </label>
-
-        <select
-          id={typeId}
-          aria-invalid={Boolean(errors.type)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
-          {...register("type")}
-        >
+        <SelectField label="Tipo" error={errors.type?.message} {...register("type")}>
           {financialAccountTypes.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
             </option>
           ))}
-        </select>
+        </SelectField>
+      </FormSection>
 
-        {errors.type?.message && (
-          <p className="text-sm" role="alert">
-            {errors.type.message}
-          </p>
-        )}
-      </div>
+      <FormError message={errors.root?.message} />
 
-      {errors.root?.message && (
-        <p className="text-sm" role="alert">
-          {errors.root.message}
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg border px-4 py-2 font-medium transition disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isSubmitting ? "Salvando..." : "Salvar alterações"}
-      </button>
+      <SubmitButton
+        isSubmitting={isSubmitting}
+        idleLabel="Salvar alterações"
+        submittingLabel="Salvando..."
+      />
     </form>
   );
 }

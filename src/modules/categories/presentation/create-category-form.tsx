@@ -1,9 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { FormError, FormSuccess } from "../../../components/forms/form-feedback";
+import { FormSection } from "../../../components/forms/form-section";
+import { SelectField } from "../../../components/forms/select-field";
+import { SubmitButton } from "../../../components/forms/submit-button";
+import { TextField } from "../../../components/forms/text-field";
 import {
   type CreateCategoryInput,
   createCategorySchema,
@@ -20,8 +25,6 @@ const categoryTypes = [
 ] as const;
 
 export function CreateCategoryForm({ workspaceId }: CreateCategoryFormProps) {
-  const nameId = useId();
-  const typeId = useId();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
@@ -32,81 +35,65 @@ export function CreateCategoryForm({ workspaceId }: CreateCategoryFormProps) {
     formState: { errors, isSubmitting },
   } = useForm<CreateCategoryInput>({
     resolver: zodResolver(createCategorySchema),
-    defaultValues: { name: "", type: "EXPENSE" },
+    defaultValues: {
+      name: "",
+      type: "EXPENSE",
+    },
   });
 
   async function onSubmit(data: CreateCategoryInput) {
     setSuccessMessage(null);
-    const result = await createCategoryAction({ workspaceId, data });
+
+    const result = await createCategoryAction({
+      workspaceId,
+      data,
+    });
 
     if (!result.success) {
-      setError("root", { message: result.message });
+      setError("root", {
+        message: result.message,
+      });
+
       return;
     }
 
-    reset({ name: "", type: "EXPENSE" });
+    reset({
+      name: "",
+      type: "EXPENSE",
+    });
+
     setSuccessMessage("Categoria criada com sucesso.");
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={nameId}>
-          Nome da categoria
-        </label>
-        <input
-          id={nameId}
-          type="text"
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <FormSection title="Dados da categoria" description="Defina o nome e o tipo da categoria.">
+        <TextField
+          label="Nome da categoria"
           autoComplete="off"
           placeholder="Ex.: Alimentação"
-          aria-invalid={Boolean(errors.name)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
+          error={errors.name?.message}
           {...register("name")}
         />
-        {errors.name?.message && (
-          <p className="text-sm" role="alert">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={typeId}>
-          Tipo
-        </label>
-        <select
-          id={typeId}
-          aria-invalid={Boolean(errors.type)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
-          {...register("type")}
-        >
+        <SelectField label="Tipo" error={errors.type?.message} {...register("type")}>
           {categoryTypes.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
             </option>
           ))}
-        </select>
-        {errors.type?.message && (
-          <p className="text-sm" role="alert">
-            {errors.type.message}
-          </p>
-        )}
-      </div>
+        </SelectField>
+      </FormSection>
 
-      {errors.root?.message && (
-        <p className="text-sm" role="alert">
-          {errors.root.message}
-        </p>
-      )}
-      {successMessage && <output className="text-sm">{successMessage}</output>}
+      <FormError message={errors.root?.message} />
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg border px-4 py-2 font-medium transition disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isSubmitting ? "Criando categoria..." : "Criar categoria"}
-      </button>
+      <FormSuccess message={successMessage} />
+
+      <SubmitButton
+        isSubmitting={isSubmitting}
+        idleLabel="Criar categoria"
+        submittingLabel="Criando categoria..."
+      />
     </form>
   );
 }

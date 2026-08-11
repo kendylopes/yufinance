@@ -1,9 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { FormError, FormSuccess } from "../../../components/forms/form-feedback";
+import { FormSection } from "../../../components/forms/form-section";
+import { SelectField } from "../../../components/forms/select-field";
+import { SubmitButton } from "../../../components/forms/submit-button";
+import { TextField } from "../../../components/forms/text-field";
 import {
   type CreateFinancialAccountInput,
   createFinancialAccountSchema,
@@ -38,10 +43,6 @@ const financialAccountTypes = [
 ] as const;
 
 export function CreateFinancialAccountForm({ workspaceId }: CreateFinancialAccountFormProps) {
-  const nameId = useId();
-  const typeId = useId();
-  const initialBalanceId = useId();
-
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
@@ -85,93 +86,47 @@ export function CreateFinancialAccountForm({ workspaceId }: CreateFinancialAccou
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={nameId}>
-          Nome da conta
-        </label>
-
-        <input
-          id={nameId}
-          type="text"
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <FormSection
+        title="Dados da conta"
+        description="Informe os dados principais da conta financeira."
+      >
+        <TextField
+          label="Nome da conta"
           autoComplete="off"
           placeholder="Ex.: Nubank"
-          aria-invalid={Boolean(errors.name)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
+          error={errors.name?.message}
           {...register("name")}
         />
 
-        {errors.name?.message && (
-          <p className="text-sm" role="alert">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={typeId}>
-          Tipo
-        </label>
-
-        <select
-          id={typeId}
-          aria-invalid={Boolean(errors.type)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
-          {...register("type")}
-        >
+        <SelectField label="Tipo" error={errors.type?.message} {...register("type")}>
           {financialAccountTypes.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
             </option>
           ))}
-        </select>
+        </SelectField>
 
-        {errors.type?.message && (
-          <p className="text-sm" role="alert">
-            {errors.type.message}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor={initialBalanceId}>
-          Saldo inicial
-        </label>
-
-        <input
-          id={initialBalanceId}
-          type="text"
+        <TextField
+          label="Saldo inicial"
           inputMode="decimal"
+          autoComplete="off"
           placeholder="0,00"
-          aria-invalid={Boolean(errors.initialBalance)}
-          className="w-full rounded-lg border px-3 py-2 outline-none transition focus:ring-2"
+          description="Informe quanto já existe nessa conta. Ex.: 1500,25 ou -350,00."
+          error={errors.initialBalance?.message}
           {...register("initialBalance")}
         />
+      </FormSection>
 
-        <p className="text-xs">Informe quanto já existe nessa conta. Ex.: 1500,25 ou -350,00.</p>
+      <FormError message={errors.root?.message} />
 
-        {errors.initialBalance?.message && (
-          <p className="text-sm" role="alert">
-            {errors.initialBalance.message}
-          </p>
-        )}
-      </div>
+      <FormSuccess message={successMessage} />
 
-      {errors.root?.message && (
-        <p className="text-sm" role="alert">
-          {errors.root.message}
-        </p>
-      )}
-
-      {successMessage && <output className="text-sm">{successMessage}</output>}
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg border px-4 py-2 font-medium transition disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isSubmitting ? "Criando conta..." : "Criar conta"}
-      </button>
+      <SubmitButton
+        isSubmitting={isSubmitting}
+        idleLabel="Criar conta"
+        submittingLabel="Criando conta..."
+      />
     </form>
   );
 }
